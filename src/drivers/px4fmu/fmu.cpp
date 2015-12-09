@@ -1162,7 +1162,7 @@ PX4FMU::pwm_ioctl(file *filp, int cmd, unsigned long arg)
 	/* FALLTHROUGH */
 	case PWM_SERVO_SET(1):
 	case PWM_SERVO_SET(0):
-		if (arg <= 2100) {
+		if (arg <= PWM_HIGHEST_MAX) {
 			up_pwm_servo_set(cmd - PWM_SERVO_SET(0), arg);
 
 		} else {
