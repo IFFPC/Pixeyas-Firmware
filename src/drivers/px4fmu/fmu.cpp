@@ -262,8 +262,8 @@ PX4FMU	*g_fmu;
 PX4FMU::PX4FMU() :
 	CDev("fmu", PX4FMU_DEVICE_PATH),
 	_mode(MODE_NONE),
-	_pwm_default_rate(50),
-	_pwm_alt_rate(50),
+	_pwm_default_rate(PWM_DEFAULT_RATE),
+	_pwm_alt_rate(PWM_ALT_RATE),
 	_pwm_alt_rate_channels(0),
 	_current_update_rate(0),
 	_work{},
@@ -376,8 +376,8 @@ PX4FMU::set_mode(Mode mode)
 		DEVICE_DEBUG("MODE_2PWM");
 
 		/* default output rates */
-		_pwm_default_rate = 50;
-		_pwm_alt_rate = 50;
+		_pwm_default_rate = PWM_DEFAULT_RATE;
+		_pwm_alt_rate = PWM_ALT_RATE;
 		_pwm_alt_rate_channels = 0;
 
 		/* XXX magic numbers */
@@ -390,8 +390,8 @@ PX4FMU::set_mode(Mode mode)
 		DEVICE_DEBUG("MODE_4PWM");
 
 		/* default output rates */
-		_pwm_default_rate = 50;
-		_pwm_alt_rate = 50;
+		_pwm_default_rate = PWM_DEFAULT_RATE;
+		_pwm_alt_rate = PWM_ALT_RATE;
 		_pwm_alt_rate_channels = 0;
 
 		/* XXX magic numbers */
@@ -404,8 +404,8 @@ PX4FMU::set_mode(Mode mode)
 		DEVICE_DEBUG("MODE_6PWM");
 
 		/* default output rates */
-		_pwm_default_rate = 50;
-		_pwm_alt_rate = 50;
+		_pwm_default_rate = PWM_DEFAULT_RATE;
+		_pwm_alt_rate = PWM_ALT_RATE;
 		_pwm_alt_rate_channels = 0;
 
 		/* XXX magic numbers */
@@ -419,8 +419,8 @@ PX4FMU::set_mode(Mode mode)
 	case MODE_8PWM: // AeroCore PWMs as 8 PWM outs
 		DEVICE_DEBUG("MODE_8PWM");
 		/* default output rates */
-		_pwm_default_rate = 50;
-		_pwm_alt_rate = 50;
+		_pwm_default_rate = PWM_DEFAULT_RATE;
+		_pwm_alt_rate = PWM_ALT_RATE;
 		_pwm_alt_rate_channels = 0;
 
 		/* XXX magic numbers */

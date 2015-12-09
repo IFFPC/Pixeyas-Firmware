@@ -108,6 +108,17 @@ __BEGIN_DECLS
  */
 #define PWM_IGNORE_THIS_CHANNEL UINT16_MAX
 
+/** 
+ * Added by teancake
+ * PWM Default rate
+ */
+#define PWM_DEFAULT_RATE 400
+
+/** 
+ * Added by teancake
+ * alternative PWM Default rate
+ */
+#define PWM_ALT_RATE 400
 /**
  * Servo output signal type, value is actual servo output pulse
  * width in microseconds.
