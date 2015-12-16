@@ -477,6 +477,20 @@ void print_status()
 
 
 	warnx("arming: %s", armed_str);
+	warnx("control mode: flag_armed = %s", (control_mode.flag_armed) ? "true" : "false");
+	warnx("control mode: flag_external_manual_override_ok = %s", (control_mode.flag_external_manual_override_ok) ? "true" : "false");
+	warnx("control mode: flag_system_hil_enabled = %s", (control_mode.flag_system_hil_enabled) ? "true" : "false");
+	warnx("control mode: flag_control_manual_enalbed = %s", (control_mode.flag_control_manual_enabled) ? "true" : "false");
+	warnx("control mode: flag_control_auto_enalbed = %s", (control_mode.flag_control_auto_enabled) ? "true" : "false");
+	warnx("control mode: flag_control_offboard_enalbed = %s", (control_mode.flag_control_offboard_enabled) ? "true" : "false");
+	warnx("control mode: flag_control_rates_enalbed = %s", (control_mode.flag_control_rates_enabled) ? "true" : "false");
+	warnx("control mode: flag_control_attitude_enalbed = %s", (control_mode.flag_control_attitude_enabled) ? "true" : "false");
+	warnx("control mode: flag_control_force_enalbed = %s", (control_mode.flag_control_force_enabled) ? "true" : "false");
+	warnx("control mode: flag_control_velocity_enalbed = %s", (control_mode.flag_control_velocity_enabled) ? "true" : "false");
+	warnx("control mode: flag_control_position_enalbed = %s", (control_mode.flag_control_position_enabled) ? "true" : "false");
+	warnx("control mode: flag_control_altitude_enalbed = %s", (control_mode.flag_control_altitude_enabled) ? "true" : "false");
+	warnx("control mode: flag_control_climb_rate_enalbed = %s", (control_mode.flag_control_climb_rate_enabled) ? "true" : "false");
+	warnx("control mode: flag_control_termination_enalbed = %s", (control_mode.flag_control_termination_enabled) ? "true" : "false");
 }
 
 static orb_advert_t status_pub;
