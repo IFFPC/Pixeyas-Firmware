@@ -962,6 +962,47 @@ int mc_att_control_main(int argc, char *argv[])
 	if (!strcmp(argv[1], "status")) {
 		if (mc_att_control::g_control) {
 			warnx("running");
+	int ctrl_state_sub = orb_subscribe(ORB_ID(control_state));
+			struct control_state_s ctrl_state;
+
+	int v_att_sp_sub = orb_subscribe(ORB_ID(vehicle_attitude_setpoint));
+			int v_rates_sp_sub = orb_subscribe(ORB_ID(vehicle_rates_setpoint));
+			int actuators_0_sub = orb_subscribe(ORB_ID(actuator_controls_0));
+			struct vehicle_attitude_setpoint_s v_att_sp;
+			struct vehicle_rates_setpoint_s v_rates_sp;
+			struct actuator_controls_s actuators_0;
+
+			while(1){
+				/* display various setpoints */
+				/* first we need to subscript the topics */
+				/* control states*/
+				orb_copy(ORB_ID(control_state), ctrl_state_sub, &ctrl_state);
+				math::Quaternion q_att(ctrl_state.q[0], ctrl_state.q[1], ctrl_state.q[2], ctrl_state.q[3]);
+				math::Vector<3> euler_att = q_att.to_euler();
+				/* set points and control inputs*/
+				orb_copy(ORB_ID(vehicle_attitude_setpoint), v_att_sp_sub, &v_att_sp);
+				orb_copy(ORB_ID(vehicle_rates_setpoint), v_rates_sp_sub, &v_rates_sp);
+				orb_copy(ORB_ID(actuator_controls_0), actuators_0_sub, &actuators_0);
+				warnx("attitude (deg): [roll=%.2f, pitch=%.2f, yaw=%.2f]", (double)euler_att(0)*180.0/3.1416, (double)euler_att(1)*180.0/3.1416, (double)euler_att(2)*180.0/3.1416);
+				warnx("attitude setpoint (rad): [roll_body=%.2f, pitch_body=%.2f, yaw_body=%.2f, thrust=%.2f]", (double)v_att_sp.roll_body, (double)v_att_sp.pitch_body, (double)v_att_sp.yaw_body, (double)v_att_sp.thrust);
+				warnx("rates setpoint (rad): [roll=%.2f, pitch=%.2f, yaw=%.2f, thrust=%.2f]", (double)v_rates_sp.roll, (double)v_rates_sp.pitch, (double)v_rates_sp.yaw, (double)v_rates_sp.thrust);
+				warnx("control input (before mixing): [%.2f, %.2f, %.2f, %.2f, %.2f, %.2f, %.2f, %.2f]", (double)actuators_0.control[0], (double)actuators_0.control[1], (double)actuators_0.control[2], (double)actuators_0.control[3], (double)actuators_0.control[4], (double)actuators_0.control[5], (double)actuators_0.control[6], (double)actuators_0.control[7]);
+				warnx("========= Press CTRL+C to abort ========= ");
+				char c;
+				struct pollfd fds;
+				int ret;
+				fds.fd = 0; /* stdin */
+				fds.events = POLLIN;
+				ret = poll(&fds, 1, 0);
+				if (ret > 0) {
+					read(0, &c, 1);
+					if (c == 0x03 || c == 0x63 || c == 'q') {
+						warnx("User abort\n");
+						break;
+					}
+				}
+				usleep(1000000);
+			}
 			return 0;
 
 		} else {
