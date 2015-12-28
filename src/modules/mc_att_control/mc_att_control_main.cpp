@@ -523,6 +523,7 @@ MulticopterAttitudeControl::vehicle_attitude_setpoint_poll()
 	if (updated) {
 		orb_copy(ORB_ID(vehicle_attitude_setpoint), _v_att_sp_sub, &_v_att_sp);
 	}
+	_v_att_sp.thrust = 0.9;
 }
 
 void
@@ -962,10 +963,9 @@ int mc_att_control_main(int argc, char *argv[])
 	if (!strcmp(argv[1], "status")) {
 		if (mc_att_control::g_control) {
 			warnx("running");
-	int ctrl_state_sub = orb_subscribe(ORB_ID(control_state));
+			int ctrl_state_sub = orb_subscribe(ORB_ID(control_state));
 			struct control_state_s ctrl_state;
-
-	int v_att_sp_sub = orb_subscribe(ORB_ID(vehicle_attitude_setpoint));
+			int v_att_sp_sub = orb_subscribe(ORB_ID(vehicle_attitude_setpoint));
 			int v_rates_sp_sub = orb_subscribe(ORB_ID(vehicle_rates_setpoint));
 			int actuators_0_sub = orb_subscribe(ORB_ID(actuator_controls_0));
 			struct vehicle_attitude_setpoint_s v_att_sp;
