@@ -2305,12 +2305,12 @@ PARAM_DEFINE_INT32(SENS_EN_LL40LS, 0);
  *
  * Set to 1000 for industry default or 900 to increase servo travel.
  *
- * @min 400
+ * @min 50
  * @max 1400
  * @unit microseconds
  * @group PWM Outputs
  */
-PARAM_DEFINE_INT32(PWM_MIN, 400);
+PARAM_DEFINE_INT32(PWM_MIN, 50);
 
 /**
  * Set the maximum PWM for the MAIN outputs
@@ -2343,7 +2343,7 @@ PARAM_DEFINE_INT32(PWM_MAX, 2500);
  * @unit microseconds
  * @group PWM Outputs
  */
-PARAM_DEFINE_INT32(PWM_DISARMED, 0);
+PARAM_DEFINE_INT32(PWM_DISARMED, 100);
 
 /**
  * Set the minimum PWM for the MAIN outputs
@@ -2354,12 +2354,12 @@ PARAM_DEFINE_INT32(PWM_DISARMED, 0);
  *
  * Set to 1000 for default or 900 to increase servo travel
  *
- * @min 400
+ * @min 50
  * @max 1400
  * @unit microseconds
  * @group PWM Outputs
  */
-PARAM_DEFINE_INT32(PWM_AUX_MIN, 400);
+PARAM_DEFINE_INT32(PWM_AUX_MIN, 50);
 
 /**
  * Set the maximum PWM for the MAIN outputs
@@ -2392,4 +2392,4 @@ PARAM_DEFINE_INT32(PWM_AUX_MAX, 2500);
  * @unit microseconds
  * @group PWM Outputs
  */
-PARAM_DEFINE_INT32(PWM_AUX_DISARMED, 1000);
+PARAM_DEFINE_INT32(PWM_AUX_DISARMED, 100);
