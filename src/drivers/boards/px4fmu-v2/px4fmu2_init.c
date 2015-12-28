@@ -248,6 +248,16 @@ __EXPORT int nsh_archinitialize(void)
 	stm32_configgpio(GPIO_VDD_5V_PERIPH_OC);
 	stm32_configgpio(GPIO_GPIO5_OUTPUT);
 
+	/* configure ESP8266 pins, for definitions see board_config.h*/
+	/* The following was originally added for the support of the EPS8266 wifi module, but is not necessary 
+	 * and thus commented out.
+	 */
+	/*
+	 * stm32_configgpio(GPIO_8266_GPIO0);
+	 * stm32_configgpio(GPIO_8266_PD);
+	 * stm32_configgpio(GPIO_8266_RST);
+	 */
+
 	/* configure the high-resolution time/callout interface */
 	hrt_init();
 

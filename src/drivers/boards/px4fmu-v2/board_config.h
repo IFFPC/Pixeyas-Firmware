@@ -226,6 +226,17 @@ __BEGIN_DECLS
 #define PWMIN_TIMER_CHANNEL	2
 #define GPIO_PWM_IN		GPIO_TIM4_CH2IN_2
 
+/* 8266 GPIO0 -> PC3, 8266_PD -> PC4, 8266_RST -> PC5 */
+/* The following was originally added for the support of the EPS8266 wifi module, but is not necessary 
+ * and thus commented out.
+ */
+/* 
+ * #define GPIO_8266_GPIO0			(GPIO_INPUT|GPIO_PULLUP|GPIO_PORTC|GPIO_PIN3)
+ * #define GPIO_8266_PD			(GPIO_OUTPUT|GPIO_PUSHPULL|GPIO_SPEED_2MHz|GPIO_OUTPUT_SET|GPIO_PORTC|GPIO_PIN4)
+ * #define GPIO_8266_RST			(GPIO_OUTPUT|GPIO_PUSHPULL|GPIO_SPEED_2MHz|GPIO_OUTPUT_SET|GPIO_PORTC|GPIO_PIN5)
+ */
+
+
 /****************************************************************************************************
  * Public Types
  ****************************************************************************************************/
