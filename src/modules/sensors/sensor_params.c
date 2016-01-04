@@ -1891,7 +1891,7 @@ PARAM_DEFINE_INT32(RC_TH_USER, 1);
  * @max 18
  * @group Radio Calibration
  */
-PARAM_DEFINE_INT32(RC_MAP_ROLL, 0);
+PARAM_DEFINE_INT32(RC_MAP_ROLL, 1);
 
 /**
  * Pitch control channel mapping.
@@ -1904,7 +1904,7 @@ PARAM_DEFINE_INT32(RC_MAP_ROLL, 0);
  * @max 18
  * @group Radio Calibration
  */
-PARAM_DEFINE_INT32(RC_MAP_PITCH, 0);
+PARAM_DEFINE_INT32(RC_MAP_PITCH, 2);
 
 /**
  * Failsafe channel mapping.
@@ -1931,7 +1931,7 @@ PARAM_DEFINE_INT32(RC_MAP_FAILSAFE, 0);  //Default to throttle function
  * @max 18
  * @group Radio Calibration
  */
-PARAM_DEFINE_INT32(RC_MAP_THROTTLE, 0);
+PARAM_DEFINE_INT32(RC_MAP_THROTTLE, 3);
 
 /**
  * Yaw control channel mapping.
@@ -1944,7 +1944,7 @@ PARAM_DEFINE_INT32(RC_MAP_THROTTLE, 0);
  * @max 18
  * @group Radio Calibration
  */
-PARAM_DEFINE_INT32(RC_MAP_YAW, 0);
+PARAM_DEFINE_INT32(RC_MAP_YAW, 4);
 
 /**
  * Mode switch channel mapping.
@@ -1958,7 +1958,7 @@ PARAM_DEFINE_INT32(RC_MAP_YAW, 0);
  * @max 18
  * @group Radio Switches
  */
-PARAM_DEFINE_INT32(RC_MAP_MODE_SW, 0);
+PARAM_DEFINE_INT32(RC_MAP_MODE_SW, 5);
 
 /**
  * Return switch channel mapping.
@@ -1985,7 +1985,7 @@ PARAM_DEFINE_INT32(RC_MAP_RATT_SW, 0);
  * @max 18
  * @group Radio Switches
  */
-PARAM_DEFINE_INT32(RC_MAP_POSCTL_SW, 0);
+PARAM_DEFINE_INT32(RC_MAP_POSCTL_SW, 6);
 
 /**
  * Loiter switch channel mapping.
@@ -1994,7 +1994,7 @@ PARAM_DEFINE_INT32(RC_MAP_POSCTL_SW, 0);
  * @max 18
  * @group Radio Switches
  */
-PARAM_DEFINE_INT32(RC_MAP_LOITER_SW, 0);
+PARAM_DEFINE_INT32(RC_MAP_LOITER_SW, 6);
 
 /**
  * Acro switch channel mapping.
@@ -2173,7 +2173,7 @@ PARAM_DEFINE_FLOAT(RC_RATT_TH, 0.5f);
  * @group Radio Switches
  *
  */
-PARAM_DEFINE_FLOAT(RC_POSCTL_TH, 0.5f);
+PARAM_DEFINE_FLOAT(RC_POSCTL_TH, 0.75f);
 
 /**
  * Threshold for selecting return to launch mode
@@ -2209,7 +2209,7 @@ PARAM_DEFINE_FLOAT(RC_RETURN_TH, 0.5f);
  *
  *
  */
-PARAM_DEFINE_FLOAT(RC_LOITER_TH, 0.5f);
+PARAM_DEFINE_FLOAT(RC_LOITER_TH, 0.25f);
 
 /**
  * Threshold for selecting acro mode

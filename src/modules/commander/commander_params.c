@@ -128,7 +128,7 @@ PARAM_DEFINE_FLOAT(BAT_V_LOAD_DROP, 0.07f);
  * @min 1
  * @max 10
  */
-PARAM_DEFINE_INT32(BAT_N_CELLS, 3);
+PARAM_DEFINE_INT32(BAT_N_CELLS, 1);
 
 /**
  * Battery capacity.
