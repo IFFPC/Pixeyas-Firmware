@@ -124,15 +124,32 @@ cmake_minimum_required(VERSION 2.8 FATAL_ERROR)
 #=============================================================================
 # parameters
 #
-
+# set parameters i.e. CMAKE_BUILD_TYPE = ""
+# If CACHE is present, then the <variable> is put in the cache instead 
+# STRING is the type, "build type" is the docstring.
 set(CMAKE_BUILD_TYPE "" CACHE STRING "build type")
+
+# set a property in the CACHE scope
+# i.e. CMAKE_BUILD_TYPE.STRINGS = ";Debug;Release;RelWithDebInfo;MinSizeRel"
 set_property(CACHE CMAKE_BUILD_TYPE PROPERTY
 	STRINGS ";Debug;Release;RelWithDebInfo;MinSizeRel")
+
+# CONFIG = "nuttx_px4fmu-v2_default" 
 set(CONFIG "nuttx_px4fmu-v2_default" CACHE STRING "desired configuration")
+
+# file: file manipulation, GLOB_RECURSE, generate a list of all files that
+#   match the globbing expression recursively.
+# configs = "cmake/configs/*.cmake"
 file(GLOB_RECURSE configs RELATIVE cmake/configs "cmake/configs/*.cmake")
+
+# CONFIG.STRINGS = ${configs}
 set_property(CACHE CONFIG PROPERTY STRINGS ${configs})
+
+# THREADS = "4"
 set(THREADS "4" CACHE STRING
 	"number of threads to use for external build processes")
+
+# DEBUG_PORT = "/dev/ttyACM0"
 set(DEBUG_PORT "/dev/ttyACM0" CACHE STRING "debugging port")
 
 #=============================================================================
@@ -140,40 +157,76 @@ set(DEBUG_PORT "/dev/ttyACM0" CACHE STRING "debugging port")
 #
 # must come before project to set toolchain
 
+# string(): string operations, REPLACE match_string replace_string 
+# i.e. in ${CONFIG} replace "_" with ";" store the result in config_args
+# config_args = "nuttx;px4fmu-v2;default"
 string(REPLACE "_" ";" config_args ${CONFIG})
+
+# list operations. GET return elements specified by the index
+# i.e. OS = config_args[0] = nuttx
 list(GET config_args 0 OS)
+
+# BOARD = config_args[1] = px4fmu-v2
 list(GET config_args 1 BOARD)
+
+# LABEL = config_args[2] = default
 list(GET config_args 2 LABEL)
+
+# target_name = "${OS}-${BOARD}-${LABEL}" = nuttx-px4fmu-v2-default
 set(target_name "${OS}-${BOARD}-${LABEL}")
 
+# message(): display a message to the user. STATUS: incidental message
 message(STATUS "${target_name}")
 
 # switch to ros CMake file if building ros
+# include(): load and run CMake code from a file
 if (${OS} STREQUAL "ros")
 	include("cmake/ros-CMakeLists.txt")
 else()  # otherwise use the rest of this file
 
+# list APPEND add elements to the list
+# CMAKE_SOURCE_DIR: the path to the top level of the source tree
+# CMAKE_MODULE_PATH = CMAKE_MODULE_PATH;CMAKE_SOURCE_DIR/cmake
 list(APPEND CMAKE_MODULE_PATH ${CMAKE_SOURCE_DIR}/cmake)
+
+# config_module = "configs/nuttx_px4fmu-v2_default"
 set(config_module "configs/${CONFIG}")
+
+# load and run the files in config_module
 include(${config_module})
 
 # cmake modules
+
+# load and run the CMake ExternalProject module
+# create custom targets to build projects in external trees
 include(ExternalProject)
 
 # require px4 module interface
+
+# px4_required_interface = px4_os_prebuild_targets;px4_os_add_flags
 set(px4_required_interface
 	px4_os_prebuild_targets
 	px4_os_add_flags
 	)
+# cmd is the loop_var, i.e. cmd = px4_required_interface[1:end] 
 foreach(cmd ${px4_required_interface})
+# if(COMMAND command-name) True if the given name is a command, macro or 
+# function that can be invoked.
+# px4_os_prebuild_targets and px4_os_add_flags are functions defined in
+# cmake/nuttx/px4_impl_nuttx.cmake
 	if(NOT COMMAND ${cmd})
 		message(FATAL_ERROR "${config_module} must implement ${cmd}")
 	endif()
 endforeach()
+
+# px4_required_config = config_module_list
+# config_module_list is defined in cmake/configs/nuttx_px4fmu-v2_default.cmake
+# and includes modules that will be built.
 set(px4_required_config
 	config_module_list
 	)
 foreach(conf ${px4_required_config})
+# test whether the variable is defined or not
 	if(NOT DEFINED ${conf})
 		message(FATAL_ERROR "cmake/${config_module} must define ${conf}")
 	endif()
@@ -182,6 +235,8 @@ endforeach()
 #=============================================================================
 # project definition
 #
+
+# name px4, languages used CXX C ASM
 project(px4 CXX C ASM)
 if (NOT ${CMAKE_VERSION} VERSION_LESS 3.0.0)
 	cmake_policy(SET CMP0045 NEW) # error on non-existent target in get prop
@@ -192,29 +247,45 @@ if (NOT ${CMAKE_VERSION} VERSION_LESS 3.1.0)
 	cmake_policy(SET CMP0054 NEW) # don't dereference quoted variables
 endif()
 
+# version_major = 1
 set(version_major 1)
+
+# version_minor = 0
 set(version_minor 0)
+
+# version_patch = 1
 set(version_patch 1)
+
+# version = 1.0.1
 set(version "${version_major}.${version_minor}.${version_patch}")
+
+# package-contact = "px4users@googlegroups.com"
 set(package-contact "px4users@googlegroups.com")
 
 #=============================================================================
 # programs
 #
+# find and load settings from an external project
 find_package(PythonInterp REQUIRED)
 
 #=============================================================================
 # cmake modules
 #
+# enable testing for current directory and below.
 enable_testing()
 
 #=============================================================================
 # check required toolchain variables
 #
+
+# required_variables = CMAKE_C_COMPILER_ID
 set(required_variables
 	CMAKE_C_COMPILER_ID
 	)
+
+
 foreach(var ${required_variables})
+# check whether ${var} is defined or not
 	if (NOT ${var})
 		message(FATAL_ERROR "Toolchain/config must define ${var}")
 	endif()
@@ -223,6 +294,10 @@ endforeach()
 #=============================================================================
 # git
 #
+
+# px4_add_git_submodule is defined in cmake/common/px4_base.cmake
+# this function adds a git submodule target.
+# target = git_genmsg, PATH = "Tools/genmsg"
 px4_add_git_submodule(TARGET git_genmsg PATH "Tools/genmsg")
 px4_add_git_submodule(TARGET git_gencpp PATH "Tools/gencpp")
 px4_add_git_submodule(TARGET git_mavlink PATH "mavlink/include/mavlink/v1.0")
@@ -234,6 +309,9 @@ px4_add_git_submodule(TARGET git_jmavsim PATH "Tools/jMAVSim")
 px4_add_git_submodule(TARGET git_gazebo PATH "Tools/sitl_gazebo")
 px4_add_git_submodule(TARGET git_matrix PATH "src/lib/matrix")
 
+# add a target with the given name that executes the given commands. 
+# NAME = submodule_clean; command1 = git submodule deinit -f .
+# command2 = rm -rf .git/modules/* 
 add_custom_target(submodule_clean
 	WORKING_DIRECTORY ${CMAKE_SOURCE_DIR}
 	COMMAND git submodule deinit -f .
@@ -243,11 +321,16 @@ add_custom_target(submodule_clean
 #=============================================================================
 # misc targets
 #
+
+# another custom target, the target can be used in make, e.g. make check_format
+# NAME = check_format, COMMAND = Tools/check_code_style.sh
 add_custom_target(check_format
 	COMMAND Tools/check_code_style.sh
 	WORKING_DIRECTORY ${CMAKE_SOURCE_DIR}
 	)
 
+# another custom target
+# NAME = config, COMMAND = cmake-gui . 
 add_custom_target(config
 	COMMAND cmake-gui .
 	WORKING_DIRECTORY ${CMAKE_BINARY_DIR}
@@ -256,6 +339,10 @@ add_custom_target(config
 #=============================================================================
 # external libraries
 #
+
+# execute function px4_os_prebuild_targets defined in 
+# cmake/nuttx/px4_impl_nuttx.cmake. This function generates os dependent targets
+# prebuild_targets is a list of targets generated by the function
 px4_os_prebuild_targets(OUT prebuild_targets
 	BOARD ${BOARD}
 	THREADS ${THREADS})
@@ -263,6 +350,8 @@ px4_os_prebuild_targets(OUT prebuild_targets
 #=============================================================================
 # build flags
 #
+# execute function px4_os_add_flags defined in 
+# cmake/nuttx/px4_impl_nuttx.cmake. This function sets the nuttx build flags
 px4_os_add_flags(
 	BOARD ${BOARD}
 	C_FLAGS c_flags
@@ -272,31 +361,57 @@ px4_os_add_flags(
 	LINK_DIRS link_dirs
 	DEFINITIONS definitions)
 
+# execute function px4_join define in 
+# cmake/common/px4_base.cmake. This function joins a list with a 
+# separator specified by GLUE. The output is stored in CMAKE_EXE_LINKER_FLAGS
+# ${exe_linker_flags} are returned by the function px4_os_add_flags. 
 px4_join(OUT CMAKE_EXE_LINKER_FLAGS LIST "${exe_linker_flags}" GLUE " ")
 px4_join(OUT CMAKE_C_FLAGS LIST "${c_flags}" GLUE " ")
 px4_join(OUT CMAKE_CXX_FLAGS LIST "${cxx_flags}" GLUE " ")
 
+# directories for the compiler to search for include files
 include_directories(${include_dirs})
+
+# directories for the linker to look for libraries
 link_directories(${link_dirs})
+
+# adds -D define flags to the compiler command line 
 add_definitions(${definitions})
 
 #=============================================================================
 # source code generation
-#
+
+# msg_files = msg/*.msg
 file(GLOB_RECURSE msg_files msg/*.msg)
+
+# px4_generate_messages is defined in cmake/common/px4_base.cmake and
+# generates source code from msg definitions
 px4_generate_messages(TARGET msg_gen
 	MSG_FILES ${msg_files}
 	OS ${OS}
 	DEPENDS git_genmsg git_gencpp
 	)
+
+# px4_generate_parameters_xml is defined in cmake/common/px4_base.cmake and
+# set a custom command to genrate a parameters.xml file. 
+# The custom command is stored in parameters.xml variable
 px4_generate_parameters_xml(OUT parameters.xml BOARD ${BOARD})
+
+# px4_generate_airframes_xml is defined in cmake/common/px4_base.cmake and
+# set a custom command to generates an airframes.xml file
 px4_generate_airframes_xml(OUT airframes.xml BOARD ${BOARD})
+
+# add a target named xml_gen
+# the keyword DEPENDS list dependencies of the command. NOTE the parameters.xml
+# and airframes.xml are two custom commands, rather than xml files here.
 add_custom_target(xml_gen
 	DEPENDS parameters.xml airframes.xml)
 
 #=============================================================================
 # external projects
 #
+
+# Don't know what it is doing here.
 
 set(ep_base ${CMAKE_BINARY_DIR}/external)
 set_property(DIRECTORY PROPERTY EP_BASE ${ep_base})
@@ -311,16 +426,26 @@ execute_process(COMMAND cmake -E make_directory ${ep_base}/Install/include)
 #=============================================================================
 # subdirectories
 #
+
+# module_libraries = empty
 set(module_libraries)
 foreach(module ${config_module_list})
+
+# add a subdirectory to the build. The source_dir specifies the directory in which the source CMakeLists.txt and code files are located. 
 	add_subdirectory(src/${module})
+
+# px4_mangle_name is defined in cmake/common/px4_base.cmake and 
+# converts a path name to a module name
 	px4_mangle_name(${module} mangled_name)
+
+# module_libraries = module_libraries;${mangled_name}
 	list(APPEND module_libraries ${mangled_name})
 	#message(STATUS "adding module: ${module}")
 endforeach()
 
 add_subdirectory(src/firmware/${OS})
 
+# config_io_board is defined in cmake/configs/nuttx_px4fmu-v2_default.cmake
 if (config_io_board)
 	add_subdirectory(src/modules/px4iofirmware)
 endif()
@@ -328,6 +453,8 @@ endif()
 #=============================================================================
 # generate git version
 #
+# px4_create_git_hash_header is defined in cmake/common/px4_base.cmake and
+# creates a header file containing the git hash of the current tree.
 px4_create_git_hash_header(HEADER ${CMAKE_BINARY_DIR}/build_git_version.h)
 
 #=============================================================================
@@ -339,6 +466,8 @@ set(CPACK_PACKAGE_VERSION ${version})
 set(CPACK_PACKAGE_CONTACT ${package_contact})
 set(CPACK_GENERATOR "ZIP")
 set(CPACK_SOURCE_GENERATOR "ZIP")
+
+# CPack is a CMake package to build binary and source package installers
 include(CPack)
 
 endif() # ros alternative endif
