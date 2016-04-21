@@ -139,6 +139,9 @@ set(config_module_list
 	#
 	examples/rover_steering_control
 
+	# Pixeyas-specific modules
+	# sonar group
+	drivers/sonar_group
 	#
 	# Demo apps
 	#
