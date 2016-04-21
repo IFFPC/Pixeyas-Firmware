@@ -1,7 +1,10 @@
+# load and run nuttx/px4_impl_nuttx.cmake
 include(nuttx/px4_impl_nuttx)
 
+#CMAKE_TOOLCHAIN_FILE = cmake/toolchains/Toolchain-arm-none-eabi.cmake
 set(CMAKE_TOOLCHAIN_FILE ${CMAKE_SOURCE_DIR}/cmake/toolchains/Toolchain-arm-none-eabi.cmake)
 
+# config_module_list = a list of modules
 set(config_module_list
 	#
 	# Board support modules
@@ -142,7 +145,7 @@ set(config_module_list
 	#examples/math_demo
 	# Tutorial code from
 	# https://px4.io/dev/px4_simple_app
-	#examples/px4_simple_app
+	examples/px4_simple_app
 
 	# Tutorial code from
 	# https://px4.io/dev/daemon
@@ -160,29 +163,39 @@ set(config_module_list
 	#examples/hwtest
 )
 
+# config_extra_builtin_cmds = serdis;sercon
 set(config_extra_builtin_cmds
 	serdis
 	sercon
 	)
 
+# config_io_board = px4io-v2
 set(config_io_board
 	px4io-v2
 	)
 
+# config_extra_libs = src/lib/mathlib/CMSIS/libarm_cortexM4lf_math.a;uavcan;xx
 set(config_extra_libs
 	${CMAKE_SOURCE_DIR}/src/lib/mathlib/CMSIS/libarm_cortexM4lf_math.a
 	uavcan
 	uavcan_stm32_driver
 	)
 
+# config_io_extra_libs = src/lib/mathlib/CMSIS/libarm_cortexM3l_math.a
 set(config_io_extra_libs
 	#${CMAKE_SOURCE_DIR}/src/lib/mathlib/CMSIS/libarm_cortexM3l_math.a
 	)
 
+# add a target that will always be built, i.e. always considered as outdated
 add_custom_target(sercon)
+
+# Targets can have properties that affect how they are built.
+# sercon.MAIN = "sercon", sercon.STACK = "2048"
 set_target_properties(sercon PROPERTIES
 	MAIN "sercon" STACK "2048")
 
+# always build serdis
+# serdis.MAIN = "serdis", serdis.STACK = "2048"
 add_custom_target(serdis)
 set_target_properties(serdis PROPERTIES
 	MAIN "serdis" STACK "2048")
