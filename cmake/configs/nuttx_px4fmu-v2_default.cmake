@@ -46,7 +46,7 @@ set(config_module_list
 	drivers/gimbal
 	drivers/pwm_input
 	drivers/camera_trigger
-
+	drivers/sonar_group_service
 	#
 	# System commands
 	#
@@ -149,7 +149,7 @@ set(config_module_list
 	# Tutorial code from
 	# https://px4.io/dev/px4_simple_app
 	examples/px4_simple_app
-
+	examples/px4_simple
 	# Tutorial code from
 	# https://px4.io/dev/daemon
 	#examples/px4_daemon_app
