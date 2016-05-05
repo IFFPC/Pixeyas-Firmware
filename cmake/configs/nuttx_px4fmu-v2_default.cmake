@@ -46,7 +46,6 @@ set(config_module_list
 	drivers/gimbal
 	drivers/pwm_input
 	drivers/camera_trigger
-	drivers/sonar_group_service
 	#
 	# System commands
 	#
@@ -141,7 +140,7 @@ set(config_module_list
 
 	# Pixeyas-specific modules
 	# sonar group
-	drivers/sonar_group
+	drivers/sonar_group_service
 	#
 	# Demo apps
 	#

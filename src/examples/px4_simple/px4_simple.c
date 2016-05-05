@@ -46,7 +46,7 @@
 #include <poll.h>
 #include <string.h>
 
-#include "D:/px4soft/px4/Firmware/src/drivers/sonar_group_service/sonar_group_topic.h"
+#include "drivers/sonar_group_service/sonar_group_topic.h"
 
 #include <uORB/uORB.h>                      //
 #include <uORB/topics/sensor_combined.h>    //Defination of sensor_combined_s
