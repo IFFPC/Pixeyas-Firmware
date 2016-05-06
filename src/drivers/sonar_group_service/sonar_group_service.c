@@ -312,9 +312,11 @@ static bool srf01_send_command(int fd, unsigned char address, unsigned char comm
 	/* wait for 2ms */
 	usleep(2000);
 	/* stop sending break frames */
-	if(ioctl(fd, TIOCCBRK,0)){
+	/* there is no need of turning off the sending
+	 * since the STM32f4 chip will do it after one break frame is sent */
+	/* if(ioctl(fd, TIOCCBRK,0)){
 	    return false;
-	}
+	} */
 	/* send the address byte */
 	if(write(fd, &address, sizeof(address))<=0){
 	    return false;
